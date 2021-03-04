@@ -1,0 +1,36 @@
+{
+  "name": "limestone-ts",
+  "version": "0.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "rollup -c",
+    "test": "rollup -c rollup.test.js && mocha 'build/index.test.js' --no-timeout --exit",
+    "fmt": "prettier --write ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fabianriewe/limestone-ts.git"
+  },
+  "author": "Fabian Riewe <fabian@kyve.network>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fabianriewe/limestone-ts/issues"
+  },
+  "homepage": "https://github.com/fabianriewe/limestone-ts#readme",
+  "dependencies": {
+    "ar-gql": "^0.0.3",
+    "arweave": "^1.10.11"
+  },
+  "devDependencies": {
+    "@rollup/pluginutils": "^4.1.0",
+    "@types/chai": "^4.2.14",
+    "@types/mocha": "^8.0.3",
+    "chai": "^4.2.0",
+    "mocha": "^8.2.0",
+    "prettier": "^2.1.2",
+    "rollup": "^2.32.1",
+    "rollup-plugin-typescript2": "^0.28.0",
+    "typescript": "^4.0.5"
+  }
+}

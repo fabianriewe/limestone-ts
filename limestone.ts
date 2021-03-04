@@ -1,4 +1,4 @@
-import {run} from "ar-gql";
+import { run } from "ar-gql";
 import Arweave from "arweave";
 
 const VERSION = "0.005";
@@ -10,18 +10,20 @@ const client = new Arweave({
 });
 
 interface LimestoneResult {
-  updated?: Date
-  price?: number
+  updated?: Date;
+  price?: number;
 }
 
-type Token = "AR" | "ETH"
+type Token = "AR" | "ETH";
 
 interface LimestoneInput {
-  type: "data-latest" | "data-configuration"
-  token: Token
+  type: "data-latest" | "data-configuration";
+  token: Token;
 }
 
-const findGraphQL = async (parameters: LimestoneInput): Promise<LimestoneResult> => {
+const findGraphQL = async (
+  parameters: LimestoneInput
+): Promise<LimestoneResult> => {
   const res = (
     await run(
       `
@@ -33,9 +35,7 @@ const findGraphQL = async (parameters: LimestoneInput): Promise<LimestoneResult>
           { name: "token", values: "${parameters.token}" }
           { name: "version", values: "${VERSION}" }
         ]
-        block: { min: ${
-        (await client.network.getInfo()).height - 50
-      } }
+        block: { min: ${(await client.network.getInfo()).height - 50} }
         first: 1
       ) {
         edges {
@@ -53,10 +53,10 @@ const findGraphQL = async (parameters: LimestoneInput): Promise<LimestoneResult>
   ).data.transactions.edges;
 
   if (res[0]) {
-
     const tags = res[0].node.tags;
 
-    let price = undefined, updated = undefined;
+    let price = undefined,
+      updated = undefined;
 
     tags.forEach((tag) => {
       if (tag.name === "value") {
@@ -69,18 +69,16 @@ const findGraphQL = async (parameters: LimestoneInput): Promise<LimestoneResult>
 
     return {
       price: price,
-      updated: updated
+      updated: updated,
     };
-
   } else {
     throw new Error("Invalid data returned from Arweave.");
   }
-}
-
+};
 
 export const getPrice = async (token: Token) => {
   return await findGraphQL({
     type: "data-latest",
     token,
   });
-}
+};
